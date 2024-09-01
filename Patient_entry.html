@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Portal - Diagnostic Center</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+        nav {
+            background-color: #333;
+            color: white;
+            padding: 10px;
+        }
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: white;
+        }
+        .content {
+            padding: 20px;
+        }
+        .card {
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            padding: 15px;
+        }
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .form-group {
+            flex: 1;
+            min-width: 200px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .form-group button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .form-group button:hover {
+            background-color: #45a049;
+        }
+        .patient-id {
+            font-weight: bold;
+        }
+        .details-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .details-table th, .details-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .details-table th {
+            background-color: #f4f4f4;
+        }
+    </style>
+    <script>
+        // Store patient data in a simple object for this example
+        const patientDatabase = {};
+
+        function generatePatientId() {
+            return 'P' + Date.now();
+        }
+
+        function addPatient() {
+            const patientIdField = document.getElementById('patient-id');
+            const patientName = document.getElementById('patient-name').value;
+            const patientAge = document.getElementById('patient-age').value;
+            const patientSex = document.getElementById('patient-sex').value;
+            const referringDoctor = document.getElementById('referring-doctor').value;
+            const entryDate = document.getElementById('entry-date').value;
+            const patientVillage = document.getElementById('patient-village').value;
+            const patientPhone = document.getElementById('patient-phone').value;
+
+            if (patientName && patientAge && patientSex && referringDoctor && entryDate && patientVillage && patientPhone) {
+                const patientId = generatePatientId();
+                patientDatabase[patientId] = { 
+                    name: patientName, 
+                    age: patientAge,
+                    sex: patientSex,
+                    doctor: referringDoctor,
+                    date: entryDate,
+                    village: patientVillage,
+                    phone: patientPhone
+                };
+                patientIdField.textContent = patientId;
+                
+                // Clear form fields
+                document.getElementById('patient-name').value = '';
+                document.getElementById('patient-age').value = '';
+                document.getElementById('patient-sex').value = '';
+                document.getElementById('referring-doctor').value = '';
+                document.getElementById('entry-date').value = '';
+                document.getElementById('patient-village').value = '';
+                document.getElementById('patient-phone').value = '';
+            } else {
+                alert('Please fill out all fields.');
+            }
+        }
+
+        function viewPatient() {
+            const searchId = document.getElementById('search-id').value;
+            const detailsDiv = document.getElementById('patient-details');
+            const patient = patientDatabase[searchId];
+
+            if (patient) {
+                detailsDiv.innerHTML = `
+                    <table class="details-table">
+                        <tr>
+                            <th>Patient ID</th>
+                            <td>${searchId}</td>
+                        </tr>
+                        <tr>
+                            <th>Name</th>
+                            <td>${patient.name}</td>
+                        </tr>
+                        <tr>
+                            <th>Age</th>
+                            <td>${patient.age}</td>
+                        </tr>
+                        <tr>
+                            <th>Sex</th>
+                            <td>${patient.sex}</td>
+                        </tr>
+                        <tr>
+                            <th>Referring Doctor</th>
+                            <td>${patient.doctor}</td>
+                        </tr>
+                        <tr>
+                            <th>Date of Entry</th>
+                            <td>${patient.date}</td>
+                        </tr>
+                        <tr>
+                            <th>Village</th>
+                            <td>${patient.village}</td>
+                        </tr>
+                        <tr>
+                            <th>Phone Number</th>
+                            <td>${patient.phone}</td>
+                        </tr>
+                    </table>
+                `;
+            } else {
+                detailsDiv.innerHTML = '<p>Patient ID not found.</p>';
+            }
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Patient Portal</h1>
+    </header>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="diagnostic_center.html">Diagnostic Center</a>
+        <a href="patient_portal.html">Patient Portal</a>
+    </nav>
+    <div class="content">
+        <h2>Patient Entry</h2>
+        <div class="card">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="patient-name">Patient Name:</label>
+                    <input type="text" id="patient-name" placeholder="Enter patient's name">
+                </div>
+                <div class="form-group">
+                    <label for="patient-age">Patient Age:</label>
+                    <input type="number" id="patient-age" placeholder="Enter patient's age">
+                </div>
+                <div class="form-group">
+                    <label for="patient-sex">Sex:</label>
+                    <select id="patient-sex">
+                        <option value="">-- Select Sex --</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="referring-doctor">Referring Doctor:</label>
+                    <input type="text" id="referring-doctor" placeholder="Enter referring doctor's name">
+                </div>
+                <div class="form-group">
+                    <label for="entry-date">Date of Entry:</label>
+                    <input type="date" id="entry-date">
+                </div>
+                <div class="form-group">
+                    <label for="patient-village">Village:</label>
+                    <input type="text" id="patient-village" placeholder="Enter patient's village">
+                </div>
+                <div class="form-group">
+                    <label for="patient-phone">Phone Number:</label>
+                    <input type="text" id="patient-phone" placeholder="Enter patient's phone number">
+                </div>
+            </div>
+            <div class="form-group">
+                <button onclick="addPatient()">Add Patient</button>
+            </div>
+            <div class="form-group">
+                <label for="patient-id">Generated Patient ID:</label>
+                <div id="patient-id" class="patient-id">--</div>
+            </div>
+        </div>
+
+        <h2>View Patient Details</h2>
+        <div class="card">
+            <div class="form-group">
+                <label for="search-id">Enter Patient ID:</label>
+                <input type="text" id="search-id" placeholder="Enter Patient ID to search">
+            </div>
+            <div class="form-group">
+                <button onclick="viewPatient()">Search Patient</button>
+            </div>
+            <div id="patient-details"></div>
+        </div>
+    </div>
+</body>
+</html>

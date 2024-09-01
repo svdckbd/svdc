@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SRI VIGNESHWARA DIAGNOSTICS</title>
+    <style>
+        /* Basic reset and styles for the page */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+            margin: 0;
+            padding: 0;
+            text-align: left; /* Align text to the left */
+        }
+        header {
+            background-color: #ffffff; /* Ensure background is white for printing */
+            border-bottom: 1px solid #ddd;
+            padding: 10px;
+        }
+        .header-content {
+            display: flex;
+            flex-direction: column; /* Stack elements vertically */
+            align-items: flex-start; /* Align items to the left */
+        }
+        .logo {
+            width: 450px;
+            height: 120px;
+            display: block;
+        }
+        .marquee {
+            background-color: tomato;
+            color: white;
+            font-size: 150%;
+            padding: 10px;
+            white-space: nowrap;
+            overflow: hidden;
+            box-sizing: border-box;
+            width: 100%;
+            text-align: center; /* Center the marquee text */
+        }
+        .marquee div {
+            display: inline-block;
+            padding-left: 100%;
+            animation: marquee 10s linear infinite;
+        }
+        @keyframes marquee {
+            from {
+                transform: translateX(0);
+            }
+            to {
+                transform: translateX(-100%);
+            }
+        }
+        nav {
+            background-color: #f2f2f2;
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        nav a {
+            margin: 0 10px;
+            text-decoration: none;
+            color: white;
+            background-color: #4CAF50;
+            padding: 10px 15px;
+            border-radius: 5px;
+            display: inline-block;
+        }
+        nav a:hover {
+            background-color: #45a049;
+        }
+        .content {
+            padding: 20px;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+        .attractive-image {
+            width: 100%;
+            max-height: 300px;
+            object-fit: cover;
+            display: block;
+            margin-top: 20px;
+        }
+        @media print {
+            @page {
+                size: A4;
+                margin: 10mm; /* Adjust margins for A4 paper */
+            }
+            body {
+                margin: 0;
+            }
+            .logo, .attractive-image {
+                width: 100%;
+                height: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <img src="SRI VIGNESHWARA DIAGNOSTICS.jpg" alt="SRI VIGNESHWARA DIAGNOSTICS Logo" class="logo">
+            <div class="marquee">
+                <div>SRI VIGNESHWARA DIAGNOSTICS: A Commitment to Wellness : Your Health Is Our Priority</div>
+            </div>
+        </div>
+    </header>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="lab_entry.html">Lab Entry</a>
+        <a href="patient_entry.html">Patient Entry</a>
+    </nav>
+    <div class="content">
+        <!-- Content removed for simplicity -->
+    </div>
+    <img src="attractive-image.jpeg" alt="attractive-image" class="img">
+</body>
+</html>

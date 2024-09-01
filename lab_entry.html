@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blood Test Information</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            text-align: center;
+        }
+        nav {
+            background-color: #f2f2f2;
+            padding: 10px;
+        }
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #4CAF50;
+        }
+        .content {
+            padding: 20px;
+        }
+        select, input[type="text"] {
+            padding: 5px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: 100%;
+        }
+        select {
+            height: auto; /* Allow height to grow with multiple selections */
+        }
+        .results {
+            margin-top: 15px;
+        }
+        .results input {
+            width: auto;
+            display: inline-block;
+        }
+        .details {
+            margin-top: 15px;
+        }
+        .details table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .details th, .details td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        .details th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+    </style>
+    <script>
+        const details = {
+            'Complete Blood Count (CBC)': {
+                specimen: 'Whole Blood',
+                range: 'Range: 4.1-5.5 (Men), 3.9-5.0 (Women)',
+                units: 'Cells/µL'
+            },
+            'Basic Metabolic Panel (BMP)': {
+                specimen: 'Serum',
+                range: 'Glucose: 70-100, Calcium: 8.5-10.2',
+                units: 'mg/dL'
+            },
+            'Lipid Panel': {
+                specimen: 'Serum',
+                range: 'Total Cholesterol: < 200, LDL: < 100',
+                units: 'mg/dL'
+            },
+            'Liver Function Tests (LFT)': {
+                specimen: 'Serum',
+                range: 'ALT: 7-56, AST: 10-40',
+                units: 'U/L'
+            },
+            'Thyroid Stimulating Hormone (TSH)': {
+                specimen: 'Serum',
+                range: 'Range: 0.4-4.0',
+                units: 'µIU/mL'
+            },
+            // Add other test details here
+            'Insulin': {
+                specimen: 'Serum',
+                range: 'Range: 2.6-24.9',
+                units: 'µIU/mL'
+            }
+        };
+
+        function updateDetails() {
+            const testSelect = document.getElementById('testSelect');
+            const selectedTests = Array.from(testSelect.selectedOptions).map(option => option.value);
+
+            if (selectedTests.length > 0) {
+                const tableRows = selectedTests.map(test => {
+                    const testDetails = details[test];
+                    return `
+                        <tr>
+                            <td>${test}</td>
+                            <td>${testDetails.specimen}</td>
+                            <td><input type="text" placeholder="Enter Result"></td>
+                            <td>${testDetails.range}</td>
+                            <td>${testDetails.units}</td>
+                        </tr>
+                    `;
+                }).join('');
+
+                document.getElementById('details').innerHTML = `
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Test Name</th>
+                                <th>Specimen Type</th>
+                                <th>Results</th>
+                                <th>Range</th>
+                                <th>Units</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${tableRows}
+                        </tbody>
+                    </table>
+                `;
+            } else {
+                document.getElementById('details').innerHTML = '';
+            }
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <h1>Blood Test Information</h1>
+    </header>
+    <nav>
+        <a href="#">Home</a>
+        <a href="#">Blood Test Information</a>
+    </nav>
+    <div class="content">
+        <label for="testSelect">Select Blood Tests:</label>
+        <select id="testSelect" multiple onchange="updateDetails()">
+            <option value="Complete Blood Count (CBC)">Complete Blood Count (CBC)</option>
+            <option value="Basic Metabolic Panel (BMP)">Basic Metabolic Panel (BMP)</option>
+            <option value="Lipid Panel">Lipid Panel</option>
+            <option value="Liver Function Tests (LFT)">Liver Function Tests (LFT)</option>
+            <option value="Thyroid Stimulating Hormone (TSH)">Thyroid Stimulating Hormone (TSH)</option>
+            <option value="Hemoglobin A1c (HbA1c)">Hemoglobin A1c (HbA1c)</option>
+            <option value="Prostate-Specific Antigen (PSA)">Prostate-Specific Antigen (PSA)</option>
+            <option value="Vitamin D 25-Hydroxy">Vitamin D 25-Hydroxy</option>
+            <option value="C-Reactive Protein (CRP)">C-Reactive Protein (CRP)</option>
+            <option value="Creatine Kinase (CK)">Creatine Kinase (CK)</option>
+            <option value="Blood Urea Nitrogen (BUN)">Blood Urea Nitrogen (BUN)</option>
+            <option value="Uric Acid">Uric Acid</option>
+            <option value="Magnesium">Magnesium</option>
+            <option value="Albumin">Albumin</option>
+            <option value="Chloride">Chloride</option>
+            <option value="Activated Partial Thromboplastin Time (aPTT)">Activated Partial Thromboplastin Time (aPTT)</option>
+            <option value="Alkaline Phosphatase (ALP)">Alkaline Phosphatase (ALP)</option>
+            <option value="Alpha-1 Antitrypsin (AAT)">Alpha-1 Antitrypsin (AAT)</option>
+            <option value="Alpha Fetoprotein (AFP)">Alpha Fetoprotein (AFP)</option>
+            <option value="Aminolevulinic Acid, Delta (ALA)">Aminolevulinic Acid, Delta (ALA)</option>
+            <option value="Aminotransferase, Alanine (ALT)">Aminotransferase, Alanine (ALT)</option>
+            <option value="Aminotransferase, Aspartate (AST)">Aminotransferase, Aspartate (AST)</option>
+            <option value="Amylase">Amylase</option>
+            <option value="Bilirubin Direct">Bilirubin Direct</option>
+            <option value="Bilirubin Total">Bilirubin Total</option>
+            <option value="Red Blood Cells, Females">Red Blood Cells, Females</option>
+            <option value="Red Blood Cells, Males">Red Blood Cells, Males</option>
+            <option value="High-Density Lipoprotein (HDL-C)">High-Density Lipoprotein (HDL-C)</option>
+            <option value="Low-Density Lipoprotein (LDL-C)">Low-Density Lipoprotein (LDL-C)</option>
+            <option value="Total Cholesterol (TC)">Total Cholesterol (TC)</option>
+            <option value="D-Dimer">D-Dimer</option>
+            <option value="Erythrocyte Sedimentation Rate (ESR) - Females">Erythrocyte Sedimentation Rate (ESR) - Females</option>
+            <option value="Erythrocyte Sedimentation Rate (ESR) - Males">Erythrocyte Sedimentation Rate (ESR) - Males</option>
+            <option value="Fibrinogen">Fibrinogen</option>
+            <option value="Creatinine">Creatinine</option>
+            <option value="Glucose - 2-Hour Postprandial">Glucose - 2-Hour Postprandial</option>
+            <option value="Glucose - Fasting">Glucose - Fasting</option>
+            <option value="Glucose-6-Phosphate Dehydrogenase (G6PD)">Glucose-6-Phosphate Dehydrogenase (G6PD)</option>
+            <option value="Haptoglobin">Haptoglobin</option>
+            <option value="Hematocrit">Hematocrit</option>
+            <option value="Insulin">Insulin</option>
+        </select>
+
+        <div id="details" class="details"></div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SRI VIGNESHWARA DIAGNOSTICS</title>
+    <style>
+        /* Basic reset and styles for the page */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4; /* Neutral background color */
+            margin: 0;
+            padding: 0;
+            text-align: left; /* Align text to the left */
+            color: #000000; /* Black text color for contrast */
+            background-image: url('background-image.jpeg'); /* Default background image */
+            background-size: cover; /* Cover the entire page */
+            background-position: center; /* Center the background image */
+            background-repeat: no-repeat; /* Prevent repeating of the image */
+        }
+        header {
+            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background for header */
+            border-bottom: 1px solid #ddd;
+            padding: 10px;
+        }
+        .header-content {
+            display: flex;
+            flex-direction: column; /* Stack elements vertically */
+            align-items: flex-start; /* Align items to the left */
+        }
+        .logo {
+            width: 450px;
+            height: 120px;
+            display: block;
+        }
+        .marquee {
+            background-color: tomato;
+            color: white;
+            font-size: 150%;
+            padding: 10px;
+            white-space: nowrap;
+            overflow: hidden;
+            box-sizing: border-box;
+            width: 100%;
+            text-align: center; /* Center the marquee text */
+        }
+        .marquee div {
+            display: inline-block;
+            padding-left: 100%;
+            animation: marquee 10s linear infinite;
+        }
+        @keyframes marquee {
+            from {
+                transform: translateX(0);
+            }
+            to {
+                transform: translateX(-100%);
+            }
+        }
+        .content {
+            padding: 20px;
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+        .login-form {
+            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background for the form */
+            color: #000000; /* Black text color for readability */
+            padding: 20px;
+            border-radius: 5px;
+            width: 300px;
+            margin: 0 auto; /* Center the form */
+        }
+        .login-form h2 {
+            margin-top: 0;
+        }
+        .login-form label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        .login-form input[type="text"],
+        .login-form input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .login-form input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .login-form input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        @media print {
+            @page {
+                size: A4;
+                margin: 10mm; /* Adjust margins for A4 paper */
+            }
+            body {
+                margin: 0;
+            }
+            .logo {
+                width: 100%;
+                height: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <img src="SRI VIGNESHWARA DIAGNOSTICS.jpg" alt="SRI VIGNESHWARA DIAGNOSTICS Logo" class="logo">
+            <div class="marquee">
+                <div>SRI VIGNESHWARA DIAGNOSTICS: A Commitment to Wellness : Your Health Is Our Priority</div>
+            </div>
+        </div>
+    </header>
+    <div class="content">
+        <!-- Login Form -->
+        <div class="login-form">
+            <h2>Login</h2>
+            <form id="loginForm">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+                
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+                
+                <input type="submit" value="Login">
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form submission
+            
+            // Get the username and password values
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            // Check credentials
+            if (username === 'svdc' && password === 'svdc2024') {
+                // Redirect to home.html if credentials are correct
+                window.location.href = 'home.html';
+            } else {
+                // Alert the user if credentials are incorrect
+                alert('Invalid username or password.');
+            }
+        });
+    </script>
+</body>
+</html>
