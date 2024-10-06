@@ -97,6 +97,32 @@
         .login-form input[type="submit"]:hover {
             background-color: #45a049;
         }
+        /* Styles for the test submission */
+        #mainContent {
+            display: none; /* Hidden by default */
+            padding: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        .button-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+        /* Additional styles for small screens */
         @media print {
             @page {
                 size: A4;
@@ -122,38 +148,390 @@
         </div>
     </header>
     <div class="content">
-        <!-- Login Form -->
-        <div class="login-form">
+        <!-- Combined Login Form -->
+        <div class="login-form" id="loginForm">
             <h2>Login</h2>
-            <form id="loginForm">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" required>
-                
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" required>
-                
-                <input type="submit" value="Login">
-            </form>
+            <input type="text" id="userId" placeholder="User ID" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button onclick="login()">Login</button>
+            <p id="loginMessage" style="color: red;"></p>
         </div>
-    </div>
 
-    <script>
-        document.getElementById('loginForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent form submission
-            
-            // Get the username and password values
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            
-            // Check credentials
-            if (username === 'svdc' && password === 'svdc2024') {
-                // Redirect to home.html if credentials are correct
-                window.location.href = 'home.html';
-            } else {
-                // Alert the user if credentials are incorrect
-                alert('Invalid username or password.');
+<div id="mainContent">
+    <h1>Select Test</h1>
+    <table style="width: 100%; margin-bottom: 20px;">
+        <tr>
+                <td><label for="Name">Name</label><br><input type="text" id="Name" required></td>
+                <td><label for="age">Age</label><br><input type="number" id="age" required></td>
+                     <td><label for="sex">Sex</label><br>
+                            <select id="sex" required>
+                                <option value="">Select Sex</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+        </tr>
+        <tr>
+            <td><label for="date">Date</label><br><input type="date" id="date" required></td>
+            <td><label for="Place">Place</label><br><input type="text" id="Place" required></td>
+            <td><label for="Referring Doctor">Referring Doctor</label><br><input type="text" id="referringDoctor" required></td>
+
+        </tr>
+    </table>
+    <label for="testSelect">Select Test:</label>
+            <select id="testSelect" multiple onchange="displaySubjects()">
+                <option value="1">Electrolytes (Profile)</option>
+                <option value="2">Complete Blood Picture (Profile)</option>
+                <option value="3">LIPID (Profile)</option>
+                <option value="4">Liver Function Test (Profile)</option>
+                <option value="5">Kidney Function Mini (Profile) (RFT)</option>
+                <option value="6">Widal Test (Slide Test)</option>
+                <option value="7">APTT</option>
+                <option value="8">Albumin</option>
+                <option value="9">ALP</option>
+                <option value="10">AAT</option>
+                <option value="11">AFP</option>
+                <option value="12">ALA</option>
+                <option value="13">ALT</option>
+                <option value="14">AST</option>
+                <option value="15">Amylase</option>
+                <option value="16">Bilirubin (Direct)</option>
+                <option value="17">Bilirubin (Total)</option>
+                <option value="18">RBC (Females)</option>
+                <option value="19">RBC (Males)</option>
+                <option value="20">Chloride</option>
+                <option value="21">HDL</option>
+                <option value="22">LDL</option>
+                <option value="23">CRP</option>
+                <option value="24">CK</option>
+                <option value="25">Creatinine</option>
+                <option value="26">ESR (Females)</option>
+                <option value="27">ESR (Males)</option>
+                <option value="28">RBC</option>
+                <option value="29">Glucose (2h)</option>
+                <option value="30">Glucose (Fasting)</option>
+                <option value="31">Haptoglobin</option>
+                <option value="32">Hematocrit (Females)</option>
+                <option value="33">Hematocrit (Males)</option>
+            </select>
+            <button id="submitButton" onclick="submitMarks()">Submit</button>
+
+            <div id="marksTable" style="display:none;">
+                <h2>
+                    <span id="selectedTestName" style="font-weight: bold;"></span>
+                </h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Test Name</th>
+                            <th>Sample Type</th>
+                            <th>Observed Values</th>
+                            <th>Biological Reference Intervals</th>
+                            <th>Units</th>
+                        </tr>
+                    </thead>
+                    <tbody id="marksBody"></tbody>
+                </table>
+            </div>
+
+            <div class="button-container">
+                <button onclick="printTable()">Print</button>
+                <button onclick="saveTable()">Save as PDF</button>
+            </div>
+        </div>
+
+        <script>
+            const validCredentials = {
+                userId: "svdc",
+                password: "svdc2024"
+            };
+
+            function login() {
+                const userId = document.getElementById("userId").value;
+                const password = document.getElementById("password").value;
+                const loginMessage = document.getElementById("loginMessage");
+
+                if (userId === validCredentials.userId && password === validCredentials.password) {
+                    document.getElementById("loginForm").style.display = "none";
+                    document.getElementById("mainContent").style.display = "block";
+                } else {
+                    loginMessage.textContent = "Invalid User ID or Password.";
+                }
             }
-        });
-    </script>
+
+        const subjects = {
+            1: [
+                { name: "Sodium", unit: "mmol/L", reference: "135-145", sampleType: "Serum" },
+                { name: "Potassium", unit: "mmol/L", reference: "3.5-5.0", sampleType: "Serum" },
+                { name: "Chloride", unit: "mmol/L", reference: "98-106", sampleType: "Serum" }
+            ],
+            2: [
+                { name: "HEMOGLOBIN", unit: "g/dL", reference: "13.5-17.5", sampleType: "Whole Blood" },
+                { name: "RBC COUNT", unit: "10^6/µL", reference: "4.5-5.9", sampleType: "Whole Blood" },
+                { name: "BLOOD INDICES", unit: "", reference: "", sampleType: "" },
+                { name: "Packed Cell Volume (PCV)", unit: "%", reference: "40-50", sampleType: "Whole Blood" },
+                { name: "Mean Corpuscular Volume (MCV)", unit: "fL", reference: "80-100", sampleType: "Whole Blood" },
+                { name: "MCH", unit: "pg", reference: "27-31", sampleType: "Whole Blood" },
+                { name: "MCHC", unit: "g/dL", reference: "32-36", sampleType: "Whole Blood" },
+                { name: "RDW count", unit: "%", reference: "11.5-14.5", sampleType: "Whole Blood" },
+                { name: "Total WBC count", unit: "10^9/L", reference: "4.5-11.0", sampleType: "Whole Blood" },
+                { name: "DIFFERENTIAL WBC COUNT", unit: "", reference: "", sampleType: "" },
+                { name: "Neutrophils", unit: "%", reference: "40-70", sampleType: "Whole Blood" },
+                { name: "Lymphocytes", unit: "%", reference: "20-45", sampleType: "Whole Blood" },
+                { name: "Eosinophils", unit: "%", reference: "1-4", sampleType: "Whole Blood" },
+                { name: "Monocytes", unit: "%", reference: "2-8", sampleType: "Whole Blood" },
+                { name: "Basophils", unit: "%", reference: "0-1", sampleType: "Whole Blood" },
+                { name: "Platelet Count", unit: "10^9/L", reference: "150-450", sampleType: "Whole Blood" }
+            ],
+            3: [
+                { name: "TOTAL CHOLESTEROL", unit: "mg/dL", sampleType: "Serum", reference: "Desirable (Low): <200, Borderline High: 200-239, Very High: ≥240" },
+                { name: "TRIGLYCERIDES", unit: "mg/dL", sampleType: "Serum", reference: "Desirable (Low): <150, Borderline High: 150-199, Very High: ≥200" },
+                { name: "HDL - CHOLESTEROL", unit: "mg/dL", sampleType: "Serum", reference: "Desirable: >40, Borderline Low: 40-60, Low: <40" },
+                { name: "LDL - CHOLESTEROL", unit: "mg/dL", sampleType: "Serum", reference: "Optimal: <100, Borderline High: 100-129, High: ≥130" },
+                { name: "VLDL CHOLESTEROL", unit: "mg/dL", sampleType: "Serum", reference: "Normal: 5-40, Borderline High: 40-60, High: >60" },
+                { name: "CHOL/HDL RATIO", unit: "", sampleType: "Serum", reference: "<5" }
+            ],
+            4: [
+                { name: "ALBUMIN", unit: "g/dL", reference: "3.5-5.0", sampleType: "Serum" },
+                { name: "BILIRUBIN TOTAL", unit: "mg/dL", reference: "0.1-1.2", sampleType: "Serum" },
+                { name: "BILIRUBIN DIRECT", unit: "mg/dL", reference: "0-0.3", sampleType: "Serum" },
+                { name: "ALP", unit: "U/L", reference: "44-147", sampleType: "Serum" },
+                { name: "ALT", unit: "U/L", reference: "7-56", sampleType: "Serum" },
+                { name: "AST", unit: "U/L", reference: "10-40", sampleType: "Serum" },
+                { name: "PROTEIN TOTAL", unit: "g/dL", reference: "6.0-8.3", sampleType: "Serum" }
+            ],
+            5: [
+                { name: "CREATININE", unit: "mg/dL", reference: "0.6-1.2", sampleType: "Serum" },
+                { name: "UREA", unit: "mg/dL", reference: "7-20", sampleType: "Serum" },
+                { name: "URIC ACID", unit: "mg/dL", reference: "3.5-7.2", sampleType: "Serum" }
+            ],
+            7: [ // APTT Test
+                { name: "APTT", unit: "seconds", reference: "25-35", sampleType: "Plasma" }
+            ],
+            8: [
+                { name: "ALBUMIN", unit: "g/dL", reference: "3.5-5.0", sampleType: "Serum" }
+            ],
+            9: [
+                { name: "ALP", unit: "U/L", reference: "44-147", sampleType: "Serum" }
+            ],
+            10: [
+                { name: "AAT", unit: "g/L", reference: "0.8-2.0", sampleType: "Serum" }
+            ],
+            11: [
+                { name: "AFP", unit: "ng/mL", reference: "< 10", sampleType: "Serum" }
+            ],
+            12: [
+                { name: "ALA", unit: "U/L", reference: "7-40", sampleType: "Serum" }
+            ],
+            13: [
+                { name: "ALT", unit: "U/L", reference: "7-56", sampleType: "Serum" }
+            ],
+            14: [
+                { name: "AST", unit: "U/L", reference: "10-40", sampleType: "Serum" }
+            ],
+            15: [
+                { name: "Amylase", unit: "U/L", reference: "30-110", sampleType: "Serum" }
+            ],
+            16: [
+                { name: "Bilirubin (Direct)", unit: "mg/dL", reference: "0-0.3", sampleType: "Serum" }
+            ],
+            17: [
+                { name: "Bilirubin (Total)", unit: "mg/dL", reference: "0.1-1.2", sampleType: "Serum" }
+            ],
+            18: [
+                { name: "RBC (Females)", unit: "10^6/µL", reference: "4.0-5.4", sampleType: "Whole Blood" }
+            ],
+            19: [
+                { name: "RBC (Males)", unit: "10^6/µL", reference: "4.7-6.1", sampleType: "Whole Blood" }
+            ],
+            20: [
+                { name: "Chloride", unit: "mmol/L", reference: "98-106", sampleType: "Serum" }
+            ],
+            21: [
+                { name: "HDL", unit: "mg/dL", reference: ">40", sampleType: "Serum" }
+            ],
+            22: [
+                { name: "LDL", unit: "mg/dL", reference: "<130", sampleType: "Serum" }
+            ],
+            23: [
+                { name: "CRP", unit: "mg/L", reference: "<5", sampleType: "Serum" }
+            ],
+            24: [
+                { name: "CK", unit: "U/L", reference: "30-200", sampleType: "Serum" }
+            ],
+            25: [
+                { name: "Creatinine", unit: "mg/dL", reference: "0.6-1.2", sampleType: "Serum" }
+            ],
+            26: [
+                { name: "ESR (Females)", unit: "mm/hr", reference: "0-20", sampleType: "Whole Blood" }
+            ],
+            27: [
+                { name: "ESR (Males)", unit: "mm/hr", reference: "0-15", sampleType: "Whole Blood" }
+            ],
+            28: [
+                { name: "RBC", unit: "10^6/µL", reference: "4.7-6.1", sampleType: "Whole Blood" }
+            ],
+            29: [
+                { name: "Glucose (2h)", unit: "mg/dL", reference: "<140", sampleType: "Serum" }
+            ],
+            30: [
+                { name: "Glucose (Fasting)", unit: "mg/dL", reference: "<100", sampleType: "Serum" }
+            ],
+            31: [
+                { name: "Haptoglobin", unit: "g/L", reference: "0.3-2.0", sampleType: "Serum" }
+            ],
+            32: [
+                { name: "Hematocrit (Females)", unit: "%", reference: "37-47", sampleType: "Whole Blood" }
+            ],
+            33: [
+                { name: "Hematocrit (Males)", unit: "%", reference: "40-54", sampleType: "Whole Blood" }
+                      ]
+        };
+
+
+            function displaySubjects() {
+                const selectedOptions = Array.from(document.getElementById("testSelect").selectedOptions);
+                const selectedTestName = selectedOptions.map(option => option.text).join(", ");
+                document.getElementById("selectedTestName").textContent = selectedTestName;
+
+                const marksBody = document.getElementById("marksBody");
+                marksBody.innerHTML = ""; // Clear previous entries
+
+                selectedOptions.forEach(option => {
+                    const testId = option.value;
+                    subjects[testId].forEach(subject => {
+                        const row = document.createElement("tr");
+                        row.innerHTML = `
+                            <td>${subject.name}</td>
+                            <td>${subject.sampleType}</td>
+                            <td><input type="text" placeholder="Enter value" /></td>
+                            <td>${subject.reference}</td>
+                            <td>${subject.unit}</td>
+                        `;
+                        marksBody.appendChild(row);
+                    });
+                });
+
+                document.getElementById("marksTable").style.display = "block";
+            }
+
+            function submitMarks() {
+                // Logic to handle submission can be added here
+                alert("Marks submitted successfully!");
+            }
+
+function printTable() {
+    const name = document.getElementById("Name").value;
+    const age = document.getElementById("age").value;
+    const sex = document.getElementById("sex").value;
+    const date = document.getElementById("date").value;
+    const place = document.getElementById("Place").value;
+    const referringDoctor = document.getElementById("referringDoctor").value; // Corrected ID to match
+
+const printContent = `
+    <style>
+        @media print {
+            @page {
+                size: A4;
+                margin: 5cm 20mm; /* 5cm top margin, 20mm for left/right/bottom */
+            }
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+            }
+            .patient-info {
+                margin-bottom: 20px;
+                border-bottom: 1px solid #ddd; /* Optional: adds a line below */
+                padding-bottom: 10px;
+            }
+            .patient-info .row {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 10px;
+            }
+            .patient-info div {
+                flex: 1; /* Allow items to grow evenly */
+                text-align: left; /* Align text to the left */
+                padding: 0 5px; /* Add some horizontal padding */
+            }
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 20px; /* Adds space above the table */
+            }
+            th, td {
+                border: 1px solid #ddd;
+                padding: 8px;
+                font-size: 12px;
+            }
+            th {
+                background-color: #f2f2f2;
+                font-weight: bold;
+            }
+        }
+    </style>
+    <div class="patient-info">
+        <div class="row">
+            <div><strong>Name:</strong> ${name}</div>
+            <div><strong>Age:</strong> ${age}</div>
+            <div><strong>Sex:</strong> ${sex}</div>
+        </div>
+        <div class="row">
+            <div><strong>Date:</strong> ${date}</div>
+            <div><strong>Place:</strong> ${place}</div>
+            <div><strong>Referring Doctor:</strong> ${referringDoctor}</div>
+        </div>
+        <div>
+            <h2>Test Results</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Test Name</th>
+                        <th>Sample Type</th>
+                        <th>Observed Values</th>
+                        <th>Biological Reference Intervals</th>
+                        <th>Units</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${Array.from(document.querySelectorAll('#marksBody tr')).map(row => {
+                        const inputs = row.querySelectorAll('input');
+                        const observedValue = inputs[0].value; // Get the value from the input field
+                        return `
+                            <tr>
+                                <td>${row.children[0].innerText}</td>
+                                <td>${row.children[1].innerText}</td>
+                                <td>${observedValue}</td>
+                                <td>${row.children[3].innerText}</td>
+                                <td>${row.children[4].innerText}</td>
+                            </tr>
+                        `;
+                    }).join('')}
+                </tbody>
+            </table>
+        </div>
+    `;
+
+    const printWindow = window.open('', '', 'height=600,width=800');
+    printWindow.document.write('<html><head><title>Print Table</title>');
+    printWindow.document.write('</head><body>');
+    printWindow.document.write(printContent);
+    printWindow.document.write('</body></html>');
+    printWindow.document.close();
+    printWindow.onload = function() {
+        printWindow.print();
+        printWindow.close();
+    };
+}
+
+
+
+
+            function saveTable() {
+                alert("Functionality to save as PDF can be implemented here.");
+            }
+        </script>
+    </div>
 </body>
 </html>
